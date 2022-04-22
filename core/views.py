@@ -122,7 +122,7 @@ def sync_with_remote_server(request):
                     ],
                     random.randint(1, 5),
                 )
-                applicant["why_learn_or_are_interested_in_ar"] = multi_weighted_random(
+                applicant["why_interested_in_ar"] = multi_weighted_random(
                     [
                         "As part of my day-to-day job",
                         "To build things for my own use (personal projects)",

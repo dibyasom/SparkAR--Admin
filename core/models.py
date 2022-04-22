@@ -58,26 +58,18 @@ class Applicant(models.Model):
     sparkar_effects_created = models.IntegerField(blank=True, default=0)
 
     # Yes, No
-    devote_time_for_advanced = models.CharField(
-        blank=True, default="", max_length=20
-    )
+    devote_time_for_advanced = models.CharField(blank=True, default="", max_length=20)
     # Fields for Professional ends ---
 
     # For students
     # Yes, No
-    laptop_w_min_requirements = models.CharField(
-        blank=True, default="", max_length=20
-    )
+    laptop_w_min_requirements = models.CharField(blank=True, default="", max_length=20)
 
     # Yes, No
-    having_idea_about_ar_vr = models.CharField(
-        blank=True, default="", max_length=20
-    )
+    having_idea_about_ar_vr = models.CharField(blank=True, default="", max_length=20)
 
     # Yes, No
-    used_photoshop_or_blender = models.CharField(
-        blank=True, default="", max_length=20
-    )
+    used_photoshop_or_blender = models.CharField(blank=True, default="", max_length=20)
 
     # Yes, No
     used_designing_tool = models.CharField(blank=True, default="", max_length=20)
@@ -88,8 +80,8 @@ class Applicant(models.Model):
     )
 
     # opt1-opt13 MULTI
-    why_did_learn_or_are_interested_in_ar = models.CharField(
-        blank=True, default="", max_length=100
+    why_interested_in_ar = models.CharField(
+        blank=True, default="", max_length=500
     )
 
     # opt1-8 MULTI
