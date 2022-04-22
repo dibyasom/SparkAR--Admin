@@ -52,35 +52,35 @@ class Applicant(models.Model):
     done_commercial_project = models.BooleanField(default=False, blank=True)
 
     # URL - SPARK Portfolio
-    sparkar_portfolio = models.CharField(blank=True, default="1plus", max_length=200)
+    sparkar_portfolio = models.CharField(blank=True, default="", max_length=200)
 
     # random(2-10)
     sparkar_effects_created = models.IntegerField(blank=True, default=0)
 
     # Yes, No
     devote_time_for_advanced = models.CharField(
-        blank=True, default="1plus", max_length=20
+        blank=True, default="", max_length=20
     )
     # Fields for Professional ends ---
 
     # For students
     # Yes, No
     laptop_w_min_requirements = models.CharField(
-        blank=True, default="1plus", max_length=20
+        blank=True, default="", max_length=20
     )
 
     # Yes, No
     having_idea_about_ar_vr = models.CharField(
-        blank=True, default="1plus", max_length=20
+        blank=True, default="", max_length=20
     )
 
     # Yes, No
     used_photoshop_or_blender = models.CharField(
-        blank=True, default="1plus", max_length=20
+        blank=True, default="", max_length=20
     )
 
     # Yes, No
-    used_designing_tool = models.CharField(blank=True, default="1plus", max_length=20)
+    used_designing_tool = models.CharField(blank=True, default="", max_length=20)
 
     # [SINGLE] "2D-Skills", "3D-Skills", "Coding Skills", "Other digital creation skills (e.g., photography, music) OPEN TEXT", "None of these"
     experienced_in = models.CharField(
@@ -89,14 +89,14 @@ class Applicant(models.Model):
 
     # opt1-opt13 MULTI
     why_did_learn_or_are_interested_in_ar = models.CharField(
-        blank=True, default="1plus", max_length=100
+        blank=True, default="", max_length=100
     )
 
     # opt1-8 MULTI
-    target_filter_types = models.CharField(blank=True, default="1plus", max_length=30)
+    target_filter_types = models.CharField(blank=True, default="", max_length=300)
 
     # opt1-5 MULTI
-    other_ar_tools = models.CharField(blank=True, default="1plus", max_length=100)
+    other_ar_tools = models.CharField(blank=True, default="", max_length=100)
     # Fields for Student ends ---
 
     # Fields common to prof an student

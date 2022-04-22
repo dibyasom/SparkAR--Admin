@@ -3,6 +3,7 @@ import random
 from django.http import HttpResponse
 from rest_framework.response import Response
 from django.shortcuts import render
+from core.models import Applicant
 
 from core.serializers import ApplicantSerializer
 
@@ -33,11 +34,10 @@ def sync_with_remote_server(request):
         # Failed and Pass counts
         failed = 0
         passed = 0
+        found = 0
 
         r = requests.get(url=URL)
         parsed_response = r.json()
-
-        processed_responses = []
 
         if len(parsed_response):
             for applicant in parsed_response:
@@ -122,11 +122,52 @@ def sync_with_remote_server(request):
                     ],
                     random.randint(1, 5),
                 )
-                applicant[
-                    "why_learn_or_are_interested_in_ar"
-                ] = f"opt{random.randint(0,9)}"
-                applicant["target_filter_types"] = f"opt{random.randint(0,9)}"
-                applicant["other_ar_tools"] = f"opt{random.randint(0,9)}"
+                applicant["why_learn_or_are_interested_in_ar"] = multi_weighted_random(
+                    [
+                        "As part of my day-to-day job",
+                        "To build things for my own use (personal projects)",
+                        "To gain experience in order to maximize future opportunities",
+                        "To make money",
+                        "To promote or extend my company’s products or brand",
+                        "I had a personal interest in it",
+                        "To learn a new skill",
+                        "To try something new",
+                        "To promote or extend my personal brand",
+                        "I believe it will have a positive impact on the world",
+                        "To express my creativity",
+                        "To stand out from the crowd",
+                        "I am not sure",
+                    ],
+                    random.randint(1, 5),
+                    [5, 15, 20, 10, 7, 25, 30, 30, 15, 20, 35, 35, 10],
+                )
+                applicant["target_filter_types"] = multi_random(
+                    [
+                        "Art",
+                        "Educational",
+                        "Games",
+                        "Fashion",
+                        "Interactive",
+                        "Music",
+                        "Games",
+                        "Viral",
+                    ],
+                    random.randint(1, 5),
+                )
+                applicant["other_ar_tools"] = multi_weighted_random(
+                    [
+                        "ARore",
+                        "ARKit",
+                        "Lightship",
+                        "Unity",
+                        "Unreal",
+                        "Vuforia",
+                        "Wikitude",
+                        "Lenstudio",
+                    ],
+                    random.randint(1, 3),
+                    [15, 20, 10, 10, 10, 10, 10, 10],
+                )
                 applicant["most_suitable_job_description"] = multi_random(
                     [
                         "3D-Animator",
@@ -141,17 +182,29 @@ def sync_with_remote_server(request):
                     ],
                     random.randint(1, 4),
                 )
-                applicant_srz = ApplicantSerializer(data=applicant)
-                try:
-                    applicant_srz.is_valid(raise_exception=True)
-                    applicant_srz.save()
-                    passed += 1
-                except Exception as err:
-                    failed += 1
-                    print("ERROR", err)
 
+                # Check doesn't exist already --
+                applicant_exists = False
+                all_applicants = Applicant.objects.all()
+                try:
+                    applicant_exists = Applicant.objects.get(email=applicant["email"])
+                except:
+                    applicant_exists = False
+
+                if not applicant_exists:
+                    applicant_srz = ApplicantSerializer(data=applicant)
+                    try:
+                        applicant_srz.is_valid(raise_exception=True)
+                        applicant_srz.save()
+                        passed += 1
+                    except Exception as err:
+                        failed += 1
+                        print("ERROR", err)
+                else:
+                    found += 1
             return HttpResponse(
-                f"Done, Received- {len(parsed_response)} | Failed @{failed} | Passed @{passed}"
-            )
+                    f"Done, Received- {len(parsed_response)} | Failed @{failed} | Passed @{passed} | Added @{found - len(all_applicants)} new entries."
+                )
+
         else:
             return HttpResponse("Failed to update")
